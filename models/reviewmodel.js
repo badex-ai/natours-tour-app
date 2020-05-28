@@ -10,7 +10,8 @@ const reviewsSchema = new mongoose.Schema(
     rating: {
       type: Number,
       min: 1,
-      max: 5
+      max: 5,
+      
     },
     createdAt: {
       type: Date,
@@ -34,6 +35,8 @@ const reviewsSchema = new mongoose.Schema(
   }
 );
 
+//creating this index hepls us to know that the user and tour have to be unique at the same time
+//meaning we cannot have duplicate review or more than one review from a particular user on a tour
 reviewsSchema.index({ tour: 1, user: 1 }, { unique: true });
 
 reviewsSchema.pre(/^find/, function(next) {
@@ -44,6 +47,10 @@ reviewsSchema.pre(/^find/, function(next) {
   this.populate({ path: 'user', select: 'name photo' });
   next();
 });
+
+
+// we create the static method to calculate the averageRatings
+//this is called directly on the schema
 reviewsSchema.statics.calcAverageRatings = async function(tourId) {
   const stats = await this.aggregate([
     {
@@ -72,10 +79,14 @@ reviewsSchema.statics.calcAverageRatings = async function(tourId) {
 };
 
 reviewsSchema.post('save', function() {
-  //this oints to current review
+  //calling the static method calcAverageRatings
+  //this points to the review
   this.constructor.calcAverageRatings(this.tour);
 });
 
+//updating the tourmodle when the review has been updated
+//we use findOneandupdate because to update the review but we dont have access to the doc 
+//we do not have access to the id of the tour model
 reviewsSchema.pre(/^findOneAnd/, async function(next) {
   this.r = await this.findOne();
   console.log(this.r);

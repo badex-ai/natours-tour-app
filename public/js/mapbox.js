@@ -1,16 +1,17 @@
-/*eslint-disable*/
-console.log('hello from the client side')
- 
-const locations = JSON.parse(document.getElementById('map').dataset.locations);
-
 /* eslint-disable */
+
+ //the dataset.location was got from the data attribute in the html
+
+//console.log(locations);
+
+
 export const displayMap = locations => {
     mapboxgl.accessToken =
-    'pk.eyJ1IjoiYmFkZXgiLCJhIjoiY2szeHNhN2QxMTlnZzNtbzEycHZuNmRyZSJ9.x-2S_9-INwvn1LQ3RtK1ig';
+    'pk.eyJ1IjoiYmFkZXgiLCJhIjoiY2thZzZlZmtnMDNsZTJzcWJncG1pa3ltaSJ9.Wp0A7XGxkP2vPIhsRr5sNw';
   
     var map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/jonasschmedtmann/cjvi9q8jd04mi1cpgmg7ev3dy',
+      style: 'mapbox://styles/badex/ckag823a40fm91imx5dcje4e4',
       scrollZoom: false
       // center: [-118.113491, 34.111745],
       // zoom: 10,
@@ -52,5 +53,5 @@ export const displayMap = locations => {
         right: 100
       }
     });
-  };
+  }
   

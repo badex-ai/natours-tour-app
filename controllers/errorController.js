@@ -12,6 +12,7 @@ const handleDuplicateFieldsDB = err => {
   return new AppError(message, 400);
 };
 const handleValidationErrorDB = err => {
+ // looping through the error objects incase the validation error is more than one
   const errors = Object.values(err.errors).map(el => el.message);
   const message = `Invalid input data.${errors.join('. ')}`;
   return new AppError(message, 400);
@@ -77,7 +78,7 @@ const sendErrorProd = (err, req, res) => {
   //Programming of other unknown error: don't leak error details
   //Send generic message
   return res.status(err.statusCode).render('error', {
-    title: 'Something wetn wrong!',
+    title: 'Something went wrong!',
     msg: 'Please try again later.'
   });
 };

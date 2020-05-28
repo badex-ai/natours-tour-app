@@ -230,6 +230,8 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
 exports.getToursWithin = catchAsync(async (req, res, next) => {
   const { distance, latlng, unit } = req.params;
   const [lat, lng] = latlng.split(',');
+
+  //converting the radius to radians 
   const radius = unit === 'mi' ? distance / 3963.2 : distance / 6378.1;
 
   if (!lat || !lng) {
@@ -241,7 +243,9 @@ exports.getToursWithin = catchAsync(async (req, res, next) => {
     );
   }
   const tours = await Tour.find({
+    //we use special geospatial queries 
     startLocation: { $geoWithin: { $centerSphere: [[lng, lat], radius] } }
+    //we have to add an index to where the geospatial data is stored and this is the startlocation in the toursSchema
   });
 
   console.log(distance, lat, lng, unit);

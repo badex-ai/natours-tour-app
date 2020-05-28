@@ -1,17 +1,27 @@
 /*eslint-disable*/
-import '@babel/polyfill';
-import {login, logout } from './login';
-import {updateSettings} from './updateSettings ';
 
+import '@babel/polyfill';
+import {displayMap} from './mapBox';
+import {login, logout } from './login';
+//import {updateSettings} from './updateSettings ';
+
+
+console.log('hello from the client side');
 //DOM ELEMENTS
 const mapBox = document.getElementById('map');
 const loginForm = document.querySelector('.form--login');
-const logOutBtn = document.querySelector('.nav__el--logout');
-const userDataForm = document.querySelector('.form-user-data');
+const logoutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
 
 
+
+
+if(mapBox){
+    const locations = JSON.parse(mapBox.dataset.locations);
+    displayMap(locations)
+};
+;
 //DELEGATION
 if(loginForm)
 loginForm.addEventListener('submit', e =>{
@@ -21,7 +31,7 @@ loginForm.addEventListener('submit', e =>{
     login(email, password);
 });
 
-if(logoutBtn) logOutBtn.addEventListener('click',logout );
+if(logoutBtn) logoutBtn.addEventListener('click',logout );
 
 if (userDataForm) 
     userDataForm.addEventListener('submit', e => { 
@@ -32,19 +42,19 @@ if (userDataForm)
 
     });
 
-    if (userPasswordForm) 
-    userPasswordForm.addEventListener('submit', async  e => { 
-        e.preventDefault();
-        document.querySelector('btn--save-password').textContent='Updating...';
+if (userPasswordForm) 
+userPasswordForm.addEventListener('submit', async  e => { 
+    e.preventDefault();
+    document.querySelector('btn--save-password').textContent='Updating...';
 
-        const passwordCurrent = document.getElementById('password-current').value;
-        const password = document.getElementById('password').value;
-        const passwordConfirmed = document.getElementById('password-confirmed').value
-        await updateSettings({passwordCurrent,password,passwordConfirmed});
+    const passwordCurrent = document.getElementById('password-current').value;
+    const password = document.getElementById('password').value;
+    const passwordConfirmed = document.getElementById('password-confirmed').value
+    await updateSettings({passwordCurrent,password,passwordConfirmed});
 
-        document.querySelector('btn--save-password').textContent= 'Save_password';
-        document.getElementById('password-current').value='';
-        document.getElementById('password').value='';
-        document.getElementById('password-confirmed').value='';
+    document.querySelector('btn--save-password').textContent= 'Save_password';
+    document.getElementById('password-current').value='';
+    document.getElementById('password').value='';
+    document.getElementById('password-confirmed').value='';
 
-    });
+});

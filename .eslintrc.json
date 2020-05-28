@@ -13,7 +13,20 @@
     "no-return-await": "off",
     "no-underscore-dangle": "off",
     "class-methods-use-this": "off",
-    "prefer-destructuring": ["error", { "object": true, "array": false }],
+    "prefer-destructuring": ["error", { "object": true, "array": true }],
     "no-unused-vars": ["error", { "argsIgnorePattern": "req|res|next|val" }]
-  }
+  },
+  "env" : {
+    "browser" : true,
+    "node" : true,
+    "es6" : true
+},
+  "parserOptions": {
+    "sourceType": "module"
+},
+"ecmaFeatures": {
+  "modules": true,
+  "spread" : true,
+  "restParams" : true
+}
 }

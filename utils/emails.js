@@ -59,10 +59,15 @@ module.exports = class Email {
   }
 
   async sendPasswordReset(){
-    await this.send('passwordReset ','Your password reset token (valid for only 10minutes)')
+    await this.send(
+      'passwordReset ',
+      'Your password reset token (valid for only 10minutes)'
+    );
   }
 };
 
+
+// Using nodemailer/ mailtrap  as our service provider
 // const sendEmail = async options => {
 //   // create a tranporter
 //   const transporter = nodemailer.createTransport({

@@ -1,11 +1,15 @@
 const path = require('path');
 const express = require('express');
+const cors = require('cors');
+//
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+
+//for passing the cookies during every request
 const cookieParser = require('cookie-parser');
 
 const AppError = require('./utils/appError');
@@ -19,6 +23,20 @@ app.set('views', path.join(__dirname, 'views'));
 //this is the middleware for assessing file in the folder that dont have a server route (serving static files)
 app.use(express.static(path.join(__dirname, 'public')));
 
+// app.use(function(req, res, next) {
+//   res.header('Access-control-Allow-Origin', '*');
+//   res.header(
+//     'Access-control-Allow-Headers',
+//     'Origin,X-requested-With,Content-type,Accept'
+//   );
+//   next();
+// });
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+  })
+);
 const tourRouter = require('./Routes/tourRoutes');
 const userRouter = require('./Routes/userRoutes');
 const reviewRouter = require('./Routes/reviewRoutes');
@@ -46,9 +64,10 @@ app.use('/api', limiter);
 //Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+//cookie parser being used
 app.use(cookieParser());
 
-// data sanitization again noSQL query injection
+// data sanitization against noSQL query injection
 app.use(mongoSanitize());
 
 // data sanitization against XSS

@@ -10,17 +10,16 @@ router.use(authController.isLoggedIn);
 router.get(
   '/',
   bookingController.createBookingCheckout,
-  authController.isLoggedIn,
   viewsController.getOverview
 );
 
-router.get('/tour/:slug', authController.isLoggedIn, viewsController.getTour);
+router.get('/tour/:slug', viewsController.getTour);
+// authController.isLoggedIn,
 
-router.get('/login', authController.isLoggedIn, viewsController.getLoginForm);
+router.get('/login', viewsController.getLoginForm);
 
 router.get('/Me', authController.protect, viewsController.getAccount);
 router.get('/My-tours', authController.protect, viewsController.getMyTours);
-
 
 router.post(
   '/submit-user-data',

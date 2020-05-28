@@ -17,7 +17,7 @@ const app = require('./app');
 
 // console.log(process.env);
 
-//TODO:For replacing the p
+//TODO:For replacing the password
 // const DB = process.env.DATABASE.replace(
 //   '<PASSWORD>',
 //   process.env.DATABASE_PASSWORD
@@ -25,9 +25,12 @@ const app = require('./app');
 
 //TODO:For the Atlas mongo server
 // mongoose
-//   .connect(DB, {
+//   .connect(
+//     'mongodb+srv://Badex-Ai:qIaQWTbVq6GmHGOU@cluster0-feurr.mongodb.net/natours?retryWrites=true&w=majority',
+//     {
 //     // .connect(DB, {
 //     useNewUrlParser: true,
+//     useUnifiedTopology: true,
 //     useCreateIndex: true,
 //     useFindAndModify: false
 //   })
@@ -40,6 +43,7 @@ mongoose
   .connect(process.env.DATABASE_LOCAL, {
     // .connect(DB, {
     useNewUrlParser: true,
+    useUnifiedTopology: true,
     useCreateIndex: true,
     useFindAndModify: false
   })
@@ -48,28 +52,22 @@ mongoose
     console.log('DB connection successful');
   });
 
-// const testTour = new Tour({
-//   name: 'The Parker Camper',
-//   price: 997
-// });
-// testTour
-//   .save()
-//   .then(doc => {
-//     console.log(doc);
-//   })
-//   .catch(err => {
-//     console.log('Error:', err);
-//   });
+
 const port = 3000;
 const server = app.listen(port, () => {
   console.log(`App running on port ${port}...`);
 });
-//globally handling unhandled rejections
+
+//globally handling unhandled rejections , unresolved promises
+//we listen to the unhandledRejection event subscribe to the error and then log the error to the console
 process.on('unhandledRejection', err => {
   console.log('UNHANDLED REJECTION! Shutting down...');
   console.log(err.name, err.message);
 
+  //close the server
   server.close(() => {
+    //close the app if the error is detected
+    //0 stands for success 1 stands for uncalled exceptions
     process.exit(1);
   });
 });

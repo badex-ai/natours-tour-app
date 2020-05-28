@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
+//this is a built in  module that helps us to creat a token which is not a jwt
 const crypto = require('crypto');
 
 const userSchema = new mongoose.Schema({
@@ -17,8 +18,8 @@ const userSchema = new mongoose.Schema({
     validate: [validator.isEmail, 'Please provide a valid email']
   },
   photo: {
-    type: String, 
-    default:'default.jpg'
+    type: String,
+    default: 'default.jpg'
   },
   role: {
     type: String,
@@ -52,19 +53,20 @@ const userSchema = new mongoose.Schema({
   }
 });
 
-userSchema.pre('save', async function(next) {
-  //only run this function if password was actually modified
-  if (!this.isModified('password')) return next();
-  this.password = await bcrypt.hash(this.password, 12);
-  this.passwordConfirm = undefined;
-  next();
-});
+// userSchema.pre('save', async function(next) {
+//   //only run this function if password was actually modified
+//   if (!this.isModified('password')) return next();
+//   this.password = await bcrypt.hash(this.password, 12);
+//   this.passwordConfirm = undefined;
+//   next();
+// });
 
-userSchema.pre('save', function(next) {
-  if (!this.isModified('password') || this.isNew) return next();
-  this.passwordChangedAt = Date.now() - 1000;
-  next();
-});
+// userSchema.pre('save', function(next) {
+//   //only save password if password has not been modified or is new
+//   if (!this.isModified('password') || this.isNew) return next();
+//   this.passwordChangedAt = Date.now() - 1000;
+//   next();
+// });
 
 userSchema.pre(/^find/, function(next) {
   //this points to the current query
@@ -72,7 +74,7 @@ userSchema.pre(/^find/, function(next) {
   next();
 });
 
-//instance method for checking input password and encrypted password in db
+//INSTANCE method for checking the equality of input password and encrypted password in db
 userSchema.methods.correctPassword = async function(
   candidatePassword,
   userPassword
@@ -84,6 +86,7 @@ userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
   if (this.passwordChangedAt) {
     const changedTimestamp = parseInt(
       this.passwordChangedAt.getTime() / 1000,
+      //the 10 means base 10
       10
     );
     console.log(changedTimestamp, JWTTimestamp);

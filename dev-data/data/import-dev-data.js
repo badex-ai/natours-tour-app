@@ -19,6 +19,20 @@ mongoose
     console.log('DB connection successful');
   });
 
+  // mongoose
+  // .connect(
+  //   'mongodb+srv://Badex-Ai:qIaQWTbVq6GmHGOU@cluster0-feurr.mongodb.net/natours?retryWrites=true&w=majority',
+  //  {
+  //   // .connect(DB, {
+  //     useNewUrlParser: true,
+  //     useUnifiedTopology: true,
+  //     useCreateIndex: true,
+  //     useFindAndModify: false
+  // })
+  // .then(() => {
+  //   console.log('DB connection successful');
+  // });
+
 //READ JSON FILE
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, 'utf-8'));
 const users = JSON.parse(fs.readFileSync(`${__dirname}/users.json`, 'utf-8'));
@@ -31,7 +45,7 @@ const importData = async () => {
   try {
     await Tour.create(tours);
     await Reviews.create(reviews);
-    await Users.create(users, {validateBeforeSave: false});
+    await Users.create(users, { validateBeforeSave: false });
     console.log('Data successfully loaded!');
   } catch (err) {
     console.log(err);
