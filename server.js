@@ -26,7 +26,7 @@ const app = require('./app');
 //TODO:For the Atlas mongo server
 // mongoose
 //   .connect(
-//     'mongodb+srv://Badex-Ai:qIaQWTbVq6GmHGOU@cluster0-feurr.mongodb.net/natours?retryWrites=true&w=majority',
+//     
 //     {
 //     // .connect(DB, {
 //     useNewUrlParser: true,
