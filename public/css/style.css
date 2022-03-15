@@ -1323,3 +1323,19 @@ body {
   -webkit-transform: translateY(-2px);
   transform: translateY(-2px);
 }
+
+*::-webkit-scrollbar {
+  width: 0.8rem;
+}
+*:hover::-webkit-scrollbar-track {
+  background: transparent;
+  box-shadow: inset 0 0 0.6rem rgba(0, 0, 0, 0.3);
+  margin: 0 2px;
+}
+*:hover::-webkit-scrollbar-thumb {
+  /* height: 20px; */
+  background-color: #b6d5b695;
+  border-radius: 2rem;
+  box-shadow: inset 0 0 0.6rem rgba(0, 0, 0, 0.3);
+  /* border: 0.75px solid #9DB9CC; */
+}

@@ -26,6 +26,7 @@ router.delete('/deleteMe', userController.deleteMe);
 
 router.patch('/updateMyPassword', authController.updatePassword);
 
+// only the admin has access to this section of the route
 router.use(authController.restrictTo('admin'));
 
 router

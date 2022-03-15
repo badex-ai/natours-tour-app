@@ -1,8 +1,8 @@
 const multer = require('multer');
 const sharp = require('sharp');
-const User = require('./../models/usermodels');
-const catchAsync = require('./../utils/catchAsync');
-const AppError = require('./../utils/appError');
+const User = require('../models/usermodels');
+const catchAsync = require('../utils/catchAsync');
+const AppError = require('../utils/appError');
 const factory = require('./handlerfactory');
 
 // const multerStorage = multer.diskStorage({
@@ -27,7 +27,7 @@ const multerFilter = (req, file, cb) => {
 
 const upload = multer({
   storage: multerStorage,
-  fileFilter: multerFilter
+  fileFilter: multerFilter,
 });
 exports.uploadUserPhoto = upload.single('photo');
 exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
@@ -44,7 +44,7 @@ exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
-  Object.keys(obj).forEach(el => {
+  Object.keys(obj).forEach((el) => {
     if (allowedFields.includes(el)) newObj[el] = obj[el];
   });
   return newObj;
@@ -59,12 +59,12 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   await User.findByIdAndUpdate(req.user.id, { active: false });
   res.status(204).json({
     status: 'success',
-    data: null
+    data: null,
   });
 });
 exports.updateMe = catchAsync(async (req, res, next) => {
-  console.log(req.body);
-  console.log(req.file);
+  // console.log(req.body);
+  // console.log(req.file);
   // create Error if user Posts password data
   if (req.body.password || req.body.passwordConfirm) {
     return next(
@@ -84,7 +84,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   //update user document
   const updateduser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
     new: true,
-    runValidators: true
+    runValidators: true,
   });
 
   res.status(200).json({ status: 'success', data: { user: updateduser } });
@@ -94,7 +94,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 exports.createUser = (req, res) => {
   res.status(201).json({
     status: 'success',
-    message: 'This route is not defined : please use signup instead '
+    message: 'This route is not defined : please use signup instead ',
   });
 };
 

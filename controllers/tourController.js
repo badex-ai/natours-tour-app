@@ -6,11 +6,11 @@
 
 const multer = require('multer');
 const sharp = require('sharp');
-const Tour = require('./../models/tourmodel');
+const Tour = require('../models/tourmodel');
 
-const catchAsync = require('./../utils/catchAsync');
+const catchAsync = require('../utils/catchAsync');
 
-const AppError = require('./../utils/appError');
+const AppError = require('../utils/appError');
 const factory = require('./handlerfactory');
 
 const multerStorage = multer.memoryStorage();
@@ -231,7 +231,7 @@ exports.getToursWithin = catchAsync(async (req, res, next) => {
   const { distance, latlng, unit } = req.params;
   const [lat, lng] = latlng.split(',');
 
-  //converting the radius to radians 
+  //converting the radius to radians
   const radius = unit === 'mi' ? distance / 3963.2 : distance / 6378.1;
 
   if (!lat || !lng) {
@@ -243,12 +243,12 @@ exports.getToursWithin = catchAsync(async (req, res, next) => {
     );
   }
   const tours = await Tour.find({
-    //we use special geospatial queries 
+    //we use special geospatial queries
     startLocation: { $geoWithin: { $centerSphere: [[lng, lat], radius] } }
     //we have to add an index to where the geospatial data is stored and this is the startlocation in the toursSchema
   });
 
-  console.log(distance, lat, lng, unit);
+  // console.log(distance, lat, lng, unit);
 
   res.status(200).json({
     status: 'success',

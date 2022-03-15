@@ -1,5 +1,7 @@
-const Review = require('./../models/reviewmodel');
+const Review = require('../models/reviewmodel');
+
 const factory = require('./handlerfactory');
+
 //const catchAsync = require('./../utils/catchAsync');
 // const AppError = require('../utils/appError');
 

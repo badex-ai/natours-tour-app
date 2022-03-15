@@ -4,16 +4,21 @@
 
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const app = require('./app');
 
-process.on('uncaughtException', err => {
+process.on('uncaughtException', (err) => {
+  console.log('--------------------------------');
   console.log('UNCAUGHT EXCEPTION! Shutting down...');
-  console.log(err.name, err.message);
+  console.log('--------------------------------');
+  console.log(err.name);
+  console.log('--------------------------------');
+  console.log(err);
+  //if the parameter of the function is 0 it means true any other number is false
   process.exit(1);
 });
 dotenv.config({
-  path: './config.env'
+  path: './config.env',
 });
-const app = require('./app');
 
 // console.log(process.env);
 
@@ -26,7 +31,7 @@ const app = require('./app');
 //TODO:For the Atlas mongo server
 // mongoose
 //   .connect(
-//     
+//
 //     {
 //     // .connect(DB, {
 //     useNewUrlParser: true,
@@ -45,22 +50,28 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
-    useFindAndModify: false
+    useFindAndModify: false,
   })
-  .then(con => {
-    console.log(con.connections);
+  .then((con) => {
+    // console.log(con.connections);
     console.log('DB connection successful');
   });
 
-
-const port = 3000;
-const server = app.listen(port, () => {
+const port = process.env.PORT;
+const server = app.listen(port || 8080, () => {
   console.log(`App running on port ${port}...`);
 });
 
+// eslint-disable-next-line import/order
+// const io = require('socket.io')(server);
+
+// io.on('connection', socket => {
+//   console.log('Client connected');
+// });
+
 //globally handling unhandled rejections , unresolved promises
 //we listen to the unhandledRejection event subscribe to the error and then log the error to the console
-process.on('unhandledRejection', err => {
+process.on('unhandledRejection', (err) => {
   console.log('UNHANDLED REJECTION! Shutting down...');
   console.log(err.name, err.message);
 

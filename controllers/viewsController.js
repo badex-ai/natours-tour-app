@@ -1,5 +1,5 @@
-const Tour = require('../models/tourmodel.js');
-const User = require('../models/usermodels.js');
+const Tour = require('../models/tourmodel');
+const User = require('../models/usermodels');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const Booking = require('../models/bookingsmodel');
@@ -15,15 +15,18 @@ exports.getOverview = catchAsync(async (req, res, next) => {
 
   res.status(200).render('overview', {
     title: 'All tours',
-    tours
+    tours,
   });
 });
 
+// We us populate to fill the field with their values
+// when referenced in the schema the select key is used
+// to remove unwanted fields in the response
 exports.getTour = catchAsync(async (req, res, next) => {
   //get the data, for the requested tour(including reviews and guides)
   const tour = await Tour.findOne({ slug: req.params.slug }).populate({
     path: 'reviews',
-    fields: 'review rating user'
+    fields: 'review rating user',
   });
 
   if (!tour) {
@@ -32,48 +35,50 @@ exports.getTour = catchAsync(async (req, res, next) => {
 
   res.status(200).render('tour', {
     title: `${tour.name} Tour`,
-    tour
+    tour,
   });
 });
 
 exports.getLoginForm = catchAsync(async (req, res) => {
   res.status(200).render('login', {
-    title: 'Log into your account'
+    title: 'Log into your account',
   });
 });
 
 exports.getAccount = (req, res) => {
   res.status(200).render('account', {
-    title: 'Your account'
+    title: 'Your account',
   });
 };
+
 exports.getMyTours = catchAsync(async (req, res, next) => {
   // find all bookings
   const bookings = await Booking.find({ user: req.user.id });
 
   //find tours with the returned ids
-  const tourIDs = bookings.map(el => el.tour);
+  const tourIDs = bookings.map((el) => el.tour);
   const tours = await Tour.find({ _id: { $in: tourIDs } });
   res.status(200).render('overview', {
     title: 'My Tours',
-    tours
+    tours,
   });
 });
+
 exports.updateUserData = catchAsync(async (req, res, next) => {
   const updatedUser = await User.findByIdAndUpdate(
     req.user.id,
     {
       name: req.body.name,
-      email: req.body.email
+      email: req.body.email,
     },
     {
       new: true,
-      runValidators: true
+      runValidators: true,
     }
   );
 
-  res.status(200).render('account', {
+  res.status(200).render('accountSettings', {
     title: 'Your account',
-    user: updatedUser
+    user: updatedUser,
   });
 });

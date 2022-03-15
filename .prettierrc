@@ -1,7 +1,5 @@
 {
-  "singleQuote": true
-  
-  
-
-
+  "singleQuote": true,
+  "htmlWhitespaceSensitivity": "css",
+  "semi": true
 }
